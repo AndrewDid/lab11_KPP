@@ -1,0 +1,120 @@
+<div class="col-md-4 blog-main box text-center" id="product_<%= product.id %>">
+
+            <div class="panel panel-info"><!-- Panel Info -->
+
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><%= product.name %></h3>
+                  </div>
+
+                  <div class="panel-body"><!-- Panel Body -->
+                    <p>$<%= product.price %> for 1 <%= product.unit %></p>
+                    <div style="color: #3BB2D6;"><%= time_ago_in_words(product.created_at) %></div>
+                    <br>
+
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myupdateproduct_<%= product.id %>">
+                          Edit
+                        </button>
+
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#mycalculateproduct_<%= product.id %>">
+                          Calculate
+                        </button>
+
+
+                        <%= link_to 'Delete', product, method: :delete, class: "btn btn-danger", remote: true %>
+                    </div>
+                  </div><!-- Panel Body -->
+
+            </div><!-- Panel Info -->
+
+
+            <!-- Modal - update products -->
+                  <%= form_for(product, :method => :put, remote: true) do |f| %>
+                  <div class="modal fade" id="myupdateproduct_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                      </div>
+                      <div class="modal-body">
+
+                      <div class="field">
+                        <%= f.label :name %><br>
+                        <%= f.text_field :name, class: "form-control" %>
+                      </div>
+                      <div class="field">
+                        <%= f.label :price %><br>
+                        <%= f.text_field :price, class: "form-control" %>
+                      </div>
+
+                      <div class="field">
+                        <%= f.label :unit %><br>
+                        <%= f.text_field :unit, class: "form-control" %>
+                      </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" id="myupdatebutton_<%= product.id %>" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <%= submit_tag "Update", class: "btn btn-primary" %>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <% end %>
+            <!-- Modal -->
+
+            <!-- Modal - calculate products -->
+                <%= form_for(product, :url => products_result_path(:quantity => :count), :action => :result, :method => :get, remote: true) do |f| %>
+                  <div class="modal fade" id="mycalculateproduct_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Calculate price</h4>
+                      </div>
+                      <div class="modal-body">
+
+                      <div class="field">
+                        <%= f.hidden_field :id, :readonly => true, class: "form-control" %>
+                      </div>
+
+
+                      <div class="field">
+                        <%= f.label :name %><br>
+                        <%= f.text_field :name, :readonly => true, class: "form-control" %>
+                      </div>
+                      <div class="field">
+                        <%= f.label :price %><br>
+                        <%= f.text_field :price, :readonly => true, class: "form-control" %>
+                      </div>
+
+                      <div class="field">
+                        <%= f.label :unit %><br>
+                        <%= f.text_field :unit, :readonly => true, class: "form-control" %>
+                      </div>
+
+                      <div class="field">
+                        <%= f.label "Quantity" %><br>
+                        <%= text_field_tag :count, "", class: "form-control" %>
+                      </div>
+                      
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" id="mycalculatebutton_<%= product.id %>" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                        <%= submit_tag "Calculate", class: "btn btn-primary" %>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <% end %>
+            <!-- Modal -->
+
+
+            <!-- rendering partial -->
+          <div id="resultproductModal">
+            <%= render 'result' %>
+          </div>
+
+</div>

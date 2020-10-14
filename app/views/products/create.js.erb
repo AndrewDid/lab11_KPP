@@ -1,0 +1,7 @@
+$("#mynewproduct").modal('hide');
+$(".product_name").val('');
+$(".product_price").val('');
+$(".product_unit").val('');
+
+$("#container_products").prepend('<%= j render @product %>');
+$("#product_<%= @product.id %>").hide().fadeIn(1000);
